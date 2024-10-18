@@ -1,0 +1,31 @@
+# docker-compose.yml
+version: '3'
+
+services:
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      - DATABASE_NAME=ecomeback
+      - DATABASE_USER=admin
+      - DATABASE_PASSWORD=admin123
+      - DATABASE_HOST=db
+      - DATABASE_PORT=5432
+
+  db:
+    image: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      POSTGRES_DB: ecomeback
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin123
+
+volumes:
+  postgres_data:
